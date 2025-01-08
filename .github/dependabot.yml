@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "api"
+    schedule:
+      interval: "daily"
+    versioning-strategy: increase
+    groups:
+      api:
+        patterns:
+          - "*"
