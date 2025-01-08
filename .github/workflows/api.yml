@@ -1,0 +1,37 @@
+name: api
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: api
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+      - name: Setup Go Lang
+        uses: actions/setup-go@v5.2.0
+      - name: Install third party dependencies
+        run: go install
+      - name: Check for linting warnings and errors
+        run: go fmt
+      - name: Check for errors in debug build
+        run: go build -o api_debug.exe
+      - name: Check for errors in release build
+        run: go build -o api_release.exe
+      - name: Run tests
+        run: go test
