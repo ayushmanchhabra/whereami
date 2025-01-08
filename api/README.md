@@ -1,0 +1,3 @@
+# api
+
+Server for `whereami`.
