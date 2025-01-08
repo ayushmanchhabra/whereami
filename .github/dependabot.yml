@@ -4,8 +4,3 @@ updates:
     directory: "api"
     schedule:
       interval: "daily"
-    versioning-strategy: increase
-    groups:
-      api:
-        patterns:
-          - "*"
