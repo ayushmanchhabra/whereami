@@ -12,10 +12,6 @@ defaults:
   run:
     working-directory: api
 
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   ci:
     if: github.event_name == 'pull_request'
