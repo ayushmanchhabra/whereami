@@ -1,4 +1,4 @@
-name: api
+name: web
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: api
+    working-directory: web
 
 concurrency:
   group: ${{ github.ref }}
@@ -23,18 +23,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup Go Lang
-        uses: actions/setup-go@v5.2.0
+      - name: Setup Node.js
+        uses: volta-cli/action@v4.2.1
       - name: Install third party dependencies
-        run: go install
+        run: npm ci
       - name: Check for linting warnings and errors
-        run: go fmt
-      - name: Check for errors in debug build
-        run: go build -o api_debug.exe
-      - name: Check for errors in release build
-        run: go build -o api_release.exe
+        run: npm run lint
+      - name: Check for errors in build process
+        run: npm run build
       - name: Run tests
-        run: go test
+        run: npm run test
 
   cd:
     if: github.event_name == 'push'
@@ -42,11 +40,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup Go Lang
-        uses: actions/setup-go@v5.2.0
+      - name: Setup Node.js
+        uses: volta-cli/action@v4.2.1
       - name: Install third party dependencies
-        run: go install
+        run: npm ci
       - name: Check for linting warnings and errors
-        run: go fmt
-      - name: Check for errors in release build
-        run: go build -o api_release.exe
+        run: npm run lint
+      - name: Build web application
+        run: npm run build
