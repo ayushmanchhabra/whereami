@@ -1,4 +1,6 @@
 *.exe
+.env
 
 dist
 node_modules
+tmp

@@ -1,13 +1,14 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
+import { AxiosResponse } from 'axios';
+import { Box, Button, Card, CardContent, CardHeader, FormControl, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { signin } from 'providers/api';
+import { useUser } from 'providers/hooks';
+import { UserSchema } from 'providers/schema';
 
 import content from './Signin.content.ts';
 import style from './Signin.module.css';
-import { AxiosResponse } from 'axios';
-import { useUser } from 'providers/hooks';
 
 function Signin(): JSX.Element {
 
@@ -42,7 +43,8 @@ function Signin(): JSX.Element {
                 setUser({ isAuthenticated: true, isAdmin: true });
             }
         } catch (error: any) {
-            setErrorMsg(error.response.data.message);
+            console.error(error);
+            setErrorMsg(error.response);
         }
     }, [username, password]);
 
@@ -51,34 +53,36 @@ function Signin(): JSX.Element {
             <Card className={style.Card} variant='outlined'>
                 <CardHeader title={content.TITLE} />
                 <CardContent>
-                    <TextField
-                        className={style.TextField}
-                        onChange={handleUsernameChange}
-                        placeholder={content.USERNAME}
-                        type='text'
-                        value={username}
-                    />
-                    <TextField
-                        className={style.TextField}
-                        onChange={handlePasswordChange}
-                        placeholder={content.PASSWORD}
-                        type='password'
-                        value={password}
-                    />
-                    <br />
-                    {errorMsg !== '' && <Typography className={style.Error}>{errorMsg}</Typography>}
-                    <br />
-                    <Button
-                        children={content.BUTTON}
-                        onClick={handleButtonClick}
-                        sx={{
-                            width: 300,
-                            border: '1px solid grey',
-                            backgroundColor: 'white',
-                            color: 'grey',
-                        }}
-                        variant='contained'
-                    />
+                    <FormControl>
+                        <TextField
+                            className={style.TextField}
+                            onChange={handleUsernameChange}
+                            placeholder={content.USERNAME}
+                            type='text'
+                            value={username}
+                        />
+                        <TextField
+                            className={style.TextField}
+                            onChange={handlePasswordChange}
+                            placeholder={content.PASSWORD}
+                            type='password'
+                            value={password}
+                        />
+                        <br />
+                        {errorMsg !== '' && <Typography className={style.Error}>{errorMsg}</Typography>}
+                        <br />
+                        <Button
+                            children={content.BUTTON}
+                            onClick={handleButtonClick}
+                            sx={{
+                                width: 300,
+                                border: '1px solid grey',
+                                backgroundColor: 'white',
+                                color: 'grey',
+                            }}
+                            variant='contained'
+                        />
+                    </FormControl>
                 </CardContent>
             </Card>
         </Box>

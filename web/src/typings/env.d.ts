@@ -3,9 +3,7 @@
 interface ImportMetaEnv {
     readonly VITE_HOST: string,
     readonly VITE_WEB_PORT: string,
-    readonly VITE_API_PORT: string,
-    readonly VITE_ADMIN_USER: string,
-    readonly VITE_ADMIN_PSWD: string,    
+    readonly VITE_API_PORT: string,    
 }
 
 interface ImportMeta {

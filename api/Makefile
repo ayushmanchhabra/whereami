@@ -1,5 +1,8 @@
 .PHONY: debug release test
 
+dev:
+	air
+
 debug:
 	go build -o api_debug.exe
 
