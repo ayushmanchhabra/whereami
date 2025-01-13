@@ -1,0 +1,23 @@
+{
+  "name": "desk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Desktop application for `whereami`.",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "base-volta-off-of-nwjs",
+    "test": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "base-volta-off-of-nwjs": "^1.0.5",
+    "nw": "^0.94.1-1",
+    "nw-builder": "^4.13.8",
+    "selenium-webdriver": "^4.27.0"
+  },
+  "volta": {
+    "node": "23.3.0"
+  }
+}
