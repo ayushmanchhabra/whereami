@@ -1,0 +1,36 @@
+.Box {
+    height: 100vh;
+    width: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Card {
+    max-width: 400px;
+}
+
+.CardActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.TextField {
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.Error {
+    color: darkred;
+}
+
+.Button {
+    margin: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 0;
+
+    background-color: white;
+    color: grey;
+}

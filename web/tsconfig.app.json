@@ -14,6 +14,24 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "typeRoots": [
+            "./src/typings"
+        ],
+    "baseUrl": "./src",
+        "paths": {
+            "assets": [
+                "assets/index.ts"
+            ],
+            "components": [
+                "components/index.ts"
+            ],
+            "providers": [
+                "providers/index.ts"
+            ],
+            "screens": [
+                "screens/index.ts"
+            ]
+        },
 
     /* Linting */
     "strict": true,

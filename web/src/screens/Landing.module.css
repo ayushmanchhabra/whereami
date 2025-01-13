@@ -1,0 +1,22 @@
+.Box {
+    height: 100vh;
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Typography {
+    display: block;
+}
+
+.Button {
+    margin: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 0;
+
+    background-color: white;
+    color: grey;
+}
