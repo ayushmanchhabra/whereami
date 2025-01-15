@@ -15,3 +15,13 @@ Server for `whereami`.
 
 - [ ] Deploy to cloud server.
 - [ ] Add code coveragen in PRs.
+
+## Documentation
+
+### `/api/v1/auth/signin`
+
+HTTP Method: `POST`
+
+Content Type: `json`
+
+Parameters: `{ username: string, password: string }`
