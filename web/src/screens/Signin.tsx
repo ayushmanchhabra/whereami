@@ -43,8 +43,8 @@ function Signin(): JSX.Element {
                 setUser({ isAuthenticated: true, isAdmin: true });
             }
         } catch (error: any) {
-            console.error(error);
-            setErrorMsg(error.response);
+            console.log(error.response.data.error);
+            setErrorMsg(error.response.data.error);
         }
     }, [username, password]);
 
@@ -53,8 +53,9 @@ function Signin(): JSX.Element {
             <Card className={style.Card} variant='outlined'>
                 <CardHeader title={content.TITLE} />
                 <CardContent>
-                    <FormControl>
+                    <FormControl component='form'>
                         <TextField
+                            autoComplete='off'
                             className={style.TextField}
                             onChange={handleUsernameChange}
                             placeholder={content.USERNAME}
@@ -62,6 +63,7 @@ function Signin(): JSX.Element {
                             value={username}
                         />
                         <TextField
+                            autoComplete='off'
                             className={style.TextField}
                             onChange={handlePasswordChange}
                             placeholder={content.PASSWORD}
