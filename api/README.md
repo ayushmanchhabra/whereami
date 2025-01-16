@@ -26,5 +26,7 @@ Content Type: `json`
 
 Parameters:
 
-- `username: string`
-- `password: string`
+| Name | Type |
+| -----|------|
+| username|`string`|
+| password|`string`|
