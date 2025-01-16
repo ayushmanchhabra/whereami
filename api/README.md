@@ -24,4 +24,7 @@ HTTP Method: `POST`
 
 Content Type: `json`
 
-Parameters: `{ username: string, password: string }`
+Parameters:
+
+- `username: string`
+- `password: string`
