@@ -53,17 +53,14 @@ func setupCors(router *gin.Engine, origins []string) *gin.Engine {
 
 func setupSessions(router *gin.Engine) *gin.Engine {
 	store := cookie.NewStore([]byte("secret"))
-	router.Use(sessions.Sessions("mysession", store))
+	router.Use(sessions.Sessions("SESSION_ID", store))
 	return router
 }
 
-func ping(router *gin.Engine) *gin.Engine {
-	router.GET("/api/v1/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "API is working",
-		})
+func ping(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "API is working",
 	})
-	return router
 }
 
 type Login struct {
@@ -73,15 +70,33 @@ type Login struct {
 
 func signin(c *gin.Context) {
 	var json Login
+	session := sessions.Default(c)
 	err := c.ShouldBindJSON(&json)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid login request."})
 		return
-	} else if json.Username != os.Getenv("ADMIN_USERNAME") && json.Password != os.Getenv("ADMIN_PASSWORD") {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Incorrect username or password."})
-	} else {
-		c.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("Welcome back, %s!", json.Username)})
 	}
+	if json.Username == os.Getenv("ADMIN_USERNAME") && json.Password == os.Getenv("ADMIN_PASSWORD") {
+		session.Set("SESSION_ID", json.Username) // Store username in session
+		session.Save()
+		c.JSON(http.StatusOK, gin.H{
+			"message": fmt.Sprintf("Welcome back, %s!", json.Username),
+		})
+		return
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Incorrect username or password."})
+		return
+	}
+}
+
+func signout(c *gin.Context) {
+	var json Login
+	c.SetCookie("SESSION_ID", "", -1, "/", "localhost", false, true)
+	session := sessions.Default(c)
+	c.ShouldBindJSON(&json)
+	session.Delete(json.Username)
+	session.Save()
+	c.JSON(http.StatusOK, gin.H{"message": "You have been signed out."})
 }
 
 func main() {
@@ -90,10 +105,11 @@ func main() {
 		fmt.Println("Error loading .env file")
 	}
 	router := setupRouter()
+	router = setupCors(router, []string{"http://localhost:5173", "http://localhost:8080"})
 	router = setupSecurityHeaders(router, "localhost:8080")
-	router = setupCors(router, []string{"http://localhost:5173"})
 	router = setupSessions(router)
-	router = ping(router)
+	router.GET("/ping", ping)
 	router.POST("/api/v1/auth/signin", signin)
+	router.POST("/api/v1/auth/signout", signout)
 	router.Run(":8080")
 }
