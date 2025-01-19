@@ -53,6 +53,13 @@ func setupCors(router *gin.Engine, origins []string) *gin.Engine {
 
 func setupSessions(router *gin.Engine) *gin.Engine {
 	store := cookie.NewStore([]byte("secret"))
+	store.Options(sessions.Options{
+		MaxAge:   int(30 * time.Minute),
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	})
 	router.Use(sessions.Sessions("SESSION_ID", store))
 	return router
 }
@@ -91,7 +98,6 @@ func signin(c *gin.Context) {
 
 func signout(c *gin.Context) {
 	var json Login
-	c.SetCookie("SESSION_ID", "", -1, "/", "localhost", false, true)
 	session := sessions.Default(c)
 	c.ShouldBindJSON(&json)
 	session.Delete(json.Username)
