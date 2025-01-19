@@ -16,7 +16,7 @@ interface UserProviderProps {
 
 function UserProvider({ children }: UserProviderProps): JSX.Element {
 
-    const initialUser = document.cookie;
+    const initialUser = document.cookie !== '' ? document.cookie : null;
 
     const [user, setUser] = React.useState<UserSchema | null>(initialUser);
 
