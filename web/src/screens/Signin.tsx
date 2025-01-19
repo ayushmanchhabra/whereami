@@ -40,7 +40,7 @@ function Signin(): JSX.Element {
         try {
             response = await signin(username, password);
             if (response.status === 200) {
-                setUser({ isAuthenticated: true, isAdmin: true });
+                setUser({ isAuthenticated: true });
             }
         } catch (error: any) {
             console.log(error.response.data.error);

@@ -1,6 +1,3 @@
-type UserSchema = {
-    isAuthenticated: boolean;
-    isAdmin: boolean;
-};
+type UserSchema = string;
 
 export default UserSchema;

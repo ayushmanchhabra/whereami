@@ -16,15 +16,21 @@ interface UserProviderProps {
 
 function UserProvider({ children }: UserProviderProps): JSX.Element {
 
-    const initialUser = JSON.parse(localStorage.getItem('auth') as string);
+    const initialUser = document.cookie;
 
     const [user, setUser] = React.useState<UserSchema | null>(initialUser);
 
     React.useEffect(() => {
         if (user === null) {
-            localStorage.clear();
-        } else {
-            localStorage.setItem('auth', JSON.stringify(user));
+            let cookies = document.cookie.split(';');
+
+            // Loop through each cookie
+            for (let i = 0; i < cookies.length; i++) {
+                // Get cookie name
+                let cookieName = cookies[i].split('=')[0].trim();
+                // Set cookie with past expiry date
+                document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            }
         }
     }, [user]);
 
