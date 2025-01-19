@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -43,7 +44,7 @@ func setupCors(router *gin.Engine, origins []string) *gin.Engine {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     origins,
 		AllowMethods:     []string{"GET", "POST"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "User-Agent"},
+		AllowHeaders:     []string{"Authorization", "Origin", "Content-Type", "User-Agent"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
@@ -56,7 +57,7 @@ func setupSessions(router *gin.Engine) *gin.Engine {
 	store.Options(sessions.Options{
 		MaxAge:   int(30 * time.Minute),
 		Path:     "/",
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
 	})
@@ -84,7 +85,7 @@ func signin(c *gin.Context) {
 		return
 	}
 	if json.Username == os.Getenv("ADMIN_USERNAME") && json.Password == os.Getenv("ADMIN_PASSWORD") {
-		session.Set("SESSION_ID", json.Username) // Store username in session
+		session.Set("SESSION_ID", json.Username)
 		session.Save()
 		c.JSON(http.StatusOK, gin.H{
 			"message": fmt.Sprintf("Welcome back, %s!", json.Username),
@@ -105,6 +106,23 @@ func signout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "You have been signed out."})
 }
 
+func UserInfo(c *gin.Context) {
+	session := sessions.Default(c)
+	client_session := c.Request.Header.Get("Authorization")
+	server_session := session.Get("SESSION_ID")
+	log.Default().Print(client_session)
+	log.Default().Print(server_session)
+	if client_session == fmt.Sprintf("%v", server_session) {
+		c.JSON(http.StatusOK, gin.H{
+			"username": "admin",
+		})
+		return
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Incorrect username or password."})
+		return
+	}
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -117,5 +135,6 @@ func main() {
 	router.GET("/ping", ping)
 	router.POST("/api/v1/user/signin", signin)
 	router.POST("/api/v1/user/signout", signout)
+	router.GET("/api/v1/user/info", UserInfo)
 	router.Run(":8080")
 }
