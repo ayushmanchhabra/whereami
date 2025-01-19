@@ -30,3 +30,15 @@ Parameters:
 | -----|------|
 | username|`string`|
 | password|`string`|
+
+### `/api/v1/user/signout`
+
+HTTP Method: `POST`
+
+Content Type: `json`
+
+Parameters:
+
+| Name | Type |
+| -----|------|
+| |``|
