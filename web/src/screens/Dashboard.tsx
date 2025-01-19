@@ -3,7 +3,7 @@ import { MoreVert as MoreIcon } from '@mui/icons-material'
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { signout } from "providers/api";
+import { signout, info } from "providers/api";
 import { useUser } from "providers/hooks";
 
 function Dashboard(): JSX.Element {
@@ -11,6 +11,7 @@ function Dashboard(): JSX.Element {
     const { user, setUser } = useUser();
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [userInfo, setUserInfo] = React.useState<any>(null);
     const open = Boolean(anchorEl);
 
     React.useEffect(() => {
@@ -18,6 +19,16 @@ function Dashboard(): JSX.Element {
             navigate('/signin');
         }
     }, [user]);
+
+    React.useEffect(() => {
+        info()
+        .then((response) => {
+            setUserInfo(response.data.username);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -59,6 +70,7 @@ function Dashboard(): JSX.Element {
             >
                 <MenuItem id='signout' onClick={handleClose}>Signout</MenuItem>
             </Menu>
+
         </Box>
     );
 }

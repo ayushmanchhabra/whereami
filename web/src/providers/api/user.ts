@@ -16,7 +16,18 @@ async function signout(): Promise<AxiosResponse> {
     return response;
 }
 
+async function info(): Promise<AxiosResponse> {
+    const response = await httpClient.get('/api/v1/user/info', {
+        withCredentials: true,
+        headers: {
+            'Authorization': document.cookie.split('=')[1],
+        },
+    });
+    return response;
+}
+
 export {
     signin,
     signout,
+    info,
 };
