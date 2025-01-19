@@ -109,7 +109,7 @@ func main() {
 	router = setupSecurityHeaders(router, "localhost:8080")
 	router = setupSessions(router)
 	router.GET("/ping", ping)
-	router.POST("/api/v1/auth/signin", signin)
-	router.POST("/api/v1/auth/signout", signout)
+	router.POST("/api/v1/user/signin", signin)
+	router.POST("/api/v1/user/signout", signout)
 	router.Run(":8080")
 }
